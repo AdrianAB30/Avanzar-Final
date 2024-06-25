@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class Herencia_Consumibles : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    protected Rigidbody2D rbd;
+    protected float speed = 2f;
 
-    // Update is called once per frame
-    void Update()
+    protected virtual void Awake()
     {
-        
+        rbd = GetComponent<Rigidbody2D>();
+    }
+    protected virtual void FixedUpdate()
+    {
+        rbd.velocity = new Vector2(0, speed);
     }
 }

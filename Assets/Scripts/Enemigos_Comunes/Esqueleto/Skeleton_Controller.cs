@@ -9,6 +9,7 @@ public class Skeleton_Controller : Herencia_Enemigos
     public GameObject Target;
     private SpriteRenderer spriteRenderer;
     public UIManager uiManager;
+
     protected override void Awake()
     {
         base.Awake();
@@ -30,12 +31,11 @@ public class Skeleton_Controller : Herencia_Enemigos
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
 
             spriteRenderer.flipX = (Target.transform.position.x < transform.position.x);
-
             Walking();
         }
         //else
         //{
-        //    Idle();
+        //    Idle();   
         //}
     }
     protected override void FixedUpdate()
@@ -98,7 +98,7 @@ public class Skeleton_Controller : Herencia_Enemigos
         if (collision.gameObject.tag == "Player")
         {
             isDetectedPlayer = true;
-            speed = 3;
+            speed = 2;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
