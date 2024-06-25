@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class Skeleton_Controller : Herencia_Enemigos
@@ -28,20 +29,14 @@ public class Skeleton_Controller : Herencia_Enemigos
             Vector2 targetPosition = new Vector2(Target.transform.position.x, transform.position.y);
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
 
-            if (Target.transform.position.x < transform.position.x)
-            {
-                spriteRenderer.flipX = true;
-            }
-            else if (Target.transform.position.x > transform.position.x)
-            {
-                spriteRenderer.flipX = false;
-            }
+            spriteRenderer.flipX = (Target.transform.position.x < transform.position.x);
+
             Walking();
         }
-        else
-        {
-            Idle();
-        }
+        //else
+        //{
+        //    Idle();
+        //}
     }
     protected override void FixedUpdate()
     {
@@ -51,6 +46,7 @@ public class Skeleton_Controller : Herencia_Enemigos
     {
         if (animator != null)
         {
+            animator.SetBool("isIdleSkeleton", true);
             animator.SetBool("isWalkingSkeleton", false);
         }
     }
@@ -59,10 +55,7 @@ public class Skeleton_Controller : Herencia_Enemigos
         if (animator != null)
         {
             animator.SetBool("isWalkingSkeleton", true);
-        }
-        else
-        {
-            Debug.Log("Estas fuera de rango");
+            animator.SetBool("isIdleSkeleton", false);
         }
     }
     public void Attack()
@@ -105,6 +98,7 @@ public class Skeleton_Controller : Herencia_Enemigos
         if (collision.gameObject.tag == "Player")
         {
             isDetectedPlayer = true;
+            speed = 3;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -112,6 +106,8 @@ public class Skeleton_Controller : Herencia_Enemigos
         if (collision.gameObject.tag == "Player")
         {
             isDetectedPlayer = false;
+            Idle();
+            speed = 0;
         }
     }
 }
