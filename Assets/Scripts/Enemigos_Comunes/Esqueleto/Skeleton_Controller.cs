@@ -6,6 +6,9 @@ using UnityEngine;
 public class Skeleton_Controller : Herencia_Enemigos
 {
     public bool isDetectedPlayer;
+    private bool isHit;
+    private float hitTimer;
+    private float hitAnimationDuration = 0.5f;
     public GameObject Target;
     private SpriteRenderer spriteRenderer;
     public UIManager uiManager;
@@ -24,19 +27,40 @@ public class Skeleton_Controller : Herencia_Enemigos
     }
     protected override void Update()
     {
-        base.Update();   
-        if (isDetectedPlayer && Target != null)
-        {
-            Vector2 targetPosition = new Vector2(Target.transform.position.x, transform.position.y);
-            transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+        base.Update();
 
-            spriteRenderer.flipX = (Target.transform.position.x < transform.position.x);
-            Walking();
+        if (isHit)
+        {
+            hitTimer -= Time.deltaTime;
+            if (hitTimer <= 0)
+            {
+                isHit = false;
+                animator.SetBool("hitSkeleton", false);
+                if (isDetectedPlayer)
+                {
+                    Walking();
+                }
+                else
+                {
+                    Idle();
+                }
+            }
         }
-        //else
-        //{
-        //    Idle();   
-        //}
+        else
+        {
+            if (isDetectedPlayer && Target != null)
+            {
+                Vector2 targetPosition = new Vector2(Target.transform.position.x, transform.position.y);
+                transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+
+                spriteRenderer.flipX = (Target.transform.position.x < transform.position.x);
+                Walking();
+            }
+            //else
+            //{
+            //    Idle();   
+            //}
+        }
     }
     protected override void FixedUpdate()
     {
@@ -72,6 +96,12 @@ public class Skeleton_Controller : Herencia_Enemigos
         isDetectedPlayer = false;
         speed = 0;      
     }
+    public void Hit()
+    {
+        animator.SetBool("hitSkeleton", true);
+        isHit = true;
+        hitTimer = hitAnimationDuration;
+    }
     public override void TakeDamage(int damage)
     {
         vidaActualEnemigo -= damage;
@@ -82,7 +112,7 @@ public class Skeleton_Controller : Herencia_Enemigos
         }
         else
         {
-            animator.SetBool("hitSkeleton", true);
+            Hit();
         }    
     }
     public void CauseDamageToPlayer()
