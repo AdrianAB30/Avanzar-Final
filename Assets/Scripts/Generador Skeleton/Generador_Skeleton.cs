@@ -8,7 +8,7 @@ public class Generador_Skeleton : MonoBehaviour
     public Transform spawnPoint;
     public float spawnInterval = 15f;
     public GameObject player;
-    public UIManager uiManager;
+    //public UIManager uiManager;
 
     void Start()
     {
@@ -21,7 +21,7 @@ public class Generador_Skeleton : MonoBehaviour
         if(skeleton_Controller != null)
         {
             skeleton_Controller.Target = player;
-            skeleton_Controller.uiManager = uiManager;
+            //skeleton_Controller.uiManager = uiManager;
             skeleton_Controller.Walking();
         }
     }

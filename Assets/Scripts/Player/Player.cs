@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
 public class Player : MonoBehaviour
 {
     public int vidaMaxPlayer = 100;
@@ -12,6 +11,7 @@ public class Player : MonoBehaviour
     public float movementHorizontal;
     public float forceJump = 2f;
     public float doubleJumpForce = 1f;
+    private bool isAlive = true;
     private bool isGrounded;
     private bool canDoubleJump;
     private Rigidbody2D rbd;
@@ -28,12 +28,12 @@ public class Player : MonoBehaviour
     }
     public void Start()
     {
-        uimanager.ActualizarBarraDeVida(vidaActualPlayer);
         vidaActualPlayer = vidaMaxPlayer;
-        uimanager.SetMaxValue(vidaMaxPlayer);
     }
     private void Update()
     {
+        if (!isAlive) return;
+
         movementHorizontal = Input.GetAxis("Horizontal");
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -54,6 +54,8 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (!isAlive) return;
+
         MovimientoFlyn();
     }
     public void MovimientoFlyn()
@@ -118,10 +120,21 @@ public class Player : MonoBehaviour
     }
     public void FlynAttack()
     {
+        if (!isAlive) return;
         if (Input.GetMouseButtonDown(0))
         {
             animator.SetTrigger("Attack");
             attackArea.SetActive(true);
+        }
+    }
+    public void FlynDeath()
+    {
+        if (animator != null)
+        {
+            animator.SetTrigger("Death");
+            speed = 0f;
+            isAlive = false;
+            Destroy(gameObject, 2.5f);
         }
     }
     public void AttackAreaDisabled()
@@ -130,16 +143,18 @@ public class Player : MonoBehaviour
     }
     public void TakeDamagePlayer(int damage)
     {
-       vidaActualPlayer -= damage;
+        if (!isAlive) return;
+        vidaActualPlayer -= damage;
+        uimanager.CambiarVidaActual(vidaActualPlayer);
         if (vidaActualPlayer <= 0)
         {
+            FlynDeath();
             Debug.Log("Player ha muerto");
-
-        uimanager.ActualizarBarraDeVida(vidaActualPlayer);
         }
     }
     public void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!isAlive) return;
         if (collision.gameObject.tag == "Coin")
         {
             uimanager.IncrementarMoneda();
@@ -149,6 +164,14 @@ public class Player : MonoBehaviour
         {
             uimanager.IncrementarGemas();
             Destroy(collision.gameObject);
+        }
+        if (collision.gameObject.tag == "EspadaSkeleton")
+        {
+            TakeDamagePlayer(10);
+        }
+        else if (collision.gameObject.tag == "EspadaSkeleton2") 
+        {
+            TakeDamagePlayer(10);
         }
     }
 }

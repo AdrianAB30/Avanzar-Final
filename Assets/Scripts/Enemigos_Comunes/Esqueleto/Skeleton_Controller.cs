@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class Skeleton_Controller : Herencia_Enemigos
@@ -8,22 +7,37 @@ public class Skeleton_Controller : Herencia_Enemigos
     public bool isDetectedPlayer;
     private bool isHit;
     private float hitTimer;
+    private bool isAttacking;
     private float hitAnimationDuration = 0.5f;
+    private float attackAnimationDuration = 0.5f;
+    private float attackTimer;
     public GameObject Target;
     private SpriteRenderer spriteRenderer;
     public UIManager uiManager;
+    public GameObject detectionArea;
+    public GameObject attackArea;
+    public GameObject swordSkeleton;    
+    private bool isPlayerInRange;
+
+    public DetectedAreaSkeleton detectionScript;
+    public AttackAreaSkeleton attackScript;
 
     protected override void Awake()
     {
         base.Awake();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        detectionScript = detectionArea.GetComponent<DetectedAreaSkeleton>();
+        attackScript = attackArea.GetComponent<AttackAreaSkeleton>();
+
+        detectionScript.skeleton_Controller = this;
+        attackScript.skeletonController = this;
     }
     protected override void Start()
     {
-        speed = 3;
         base.Start();
-        Walking();
+        isDetectedPlayer = true;
     }
     protected override void Update()
     {
@@ -46,25 +60,42 @@ public class Skeleton_Controller : Herencia_Enemigos
                 }
             }
         }
-        else
+        if (isAttacking)
         {
-            if (isDetectedPlayer && Target != null)
+            attackTimer -= Time.deltaTime;
+            if (attackTimer <= 0)
             {
-                Vector2 targetPosition = new Vector2(Target.transform.position.x, transform.position.y);
-                transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
-
-                spriteRenderer.flipX = (Target.transform.position.x < transform.position.x);
-                Walking();
+                isAttacking = false;
+                animator.SetBool("isAttackingSkeleton", false);
             }
-            //else
-            //{
-            //    Idle();   
-            //}
         }
     }
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
+
+        if (!isHit)
+        {
+            if (isDetectedPlayer && Target != null)
+            {
+                Vector2 targetPosition = new Vector2(Target.transform.position.x, _compRigidbody.position.y);
+
+                _compRigidbody.MovePosition(Vector2.MoveTowards(_compRigidbody.position, targetPosition, speed * Time.deltaTime));
+
+                Vector2 direction = (targetPosition - (Vector2)_compRigidbody.position).normalized;
+                spriteRenderer.flipX = (Target.transform.position.x < transform.position.x);
+
+                Walking();
+            }
+            else
+            {
+                Idle();
+            }
+        }
+        if (isDetectedPlayer && isPlayerInRange)
+        {
+            Attack();
+        }
     }
     public void Idle()
     {
@@ -86,15 +117,17 @@ public class Skeleton_Controller : Herencia_Enemigos
     {
         if (animator != null)
         {
-            animator.SetBool("isAttackSkeleton", true);
-            CauseDamageToPlayer();
+            animator.SetBool("isAttackingSkeleton", true);
+            isDetectedPlayer = false;
+            isAttacking = true;
+            attackTimer = attackAnimationDuration;
         }
     }
     public void Death()
     {
         animator.SetTrigger("deathSkeleton");
         isDetectedPlayer = false;
-        speed = 0;      
+        speed = 0;
     }
     public void Hit()
     {
@@ -102,42 +135,48 @@ public class Skeleton_Controller : Herencia_Enemigos
         isHit = true;
         hitTimer = hitAnimationDuration;
     }
+    public void PlayerLost()
+    {
+        isDetectedPlayer = false;
+        Idle();
+        speed = 0;
+    }
+    public void PlayerDetected()
+    {
+        isDetectedPlayer = true;
+        speed = 2.5f;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Area_Ataque_Flyn")
+        {
+            TakeDamage(damage);
+        }    
+    }
+    //private void OnTriggerStay2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.tag == "EspadaSkeleton" && isAttacking)
+    //    {
+    //        Player player = collision.gameObject.GetComponent<Player>();
+    //        if (player != null)
+    //        {
+    //            player.TakeDamagePlayer(10);
+    //            uiManager.CambiarVidaActual(player.vidaActualPlayer);
+    //        }
+    //    }
+    //}
     public override void TakeDamage(int damage)
     {
         vidaActualEnemigo -= damage;
 
         if (vidaActualEnemigo <= 0)
         {
-            Death();     
+            Death();
         }
         else
         {
             Hit();
-        }    
-    }
-    public void CauseDamageToPlayer()
-    {
-        
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.gameObject.tag == "Area_Ataque_Flyn")
-        {
-            TakeDamage(damage);
-        }
-        if (collision.gameObject.tag == "Player")
-        {
-            isDetectedPlayer = true;
-            speed = 2;
-        }
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Player")
-        {
-            isDetectedPlayer = false;
-            Idle();
-            speed = 0;
         }
     }
 }

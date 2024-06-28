@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class Generador_Goblin : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public GameObject goblinPrefab;
+    public Transform spawnpoint;
+    public float spawnInterval = 10f;
+    public GameObject player;
+    //public UIManager uIManager;
+
     void Start()
     {
-        
+        InvokeRepeating("SpawnGoblin", 0f, spawnInterval);
     }
-
-    // Update is called once per frame
-    void Update()
+    public void SpawnGoblin()
     {
-        
+        GameObject goblin = Instantiate(goblinPrefab,spawnpoint.position,spawnpoint.rotation);
+        Goblin_Controller goblin_Controller = goblin.GetComponent<Goblin_Controller>();
+        if (goblin_Controller != null)
+        {
+            goblin_Controller.Target = player;
+            //skeleton_Controller.uiManager = uiManager;
+            goblin_Controller.Walking();
+        }
     }
 }

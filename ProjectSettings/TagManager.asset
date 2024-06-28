@@ -12,16 +12,20 @@ TagManager:
   - Area_Ataque_Flyn
   - Skeleton
   - Goblin
+  - AttackAreaSkeleton
+  - EspadaSkeleton
+  - DetectedAreaSkeleton
+  - EspadaSkeleton2
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Deteccion Skeleton
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Attack Skeleton
+  - Attack Player
+  - Skeleton
   - 
   - 
   - 

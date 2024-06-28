@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class UIManager : MonoBehaviour
 {
     public Text Contador_Monedas;
@@ -15,6 +14,8 @@ public class UIManager : MonoBehaviour
     {
         ActualizarContadorMonedas();
         ActualizarContadorGemas();
+        IniciarBarradeVida(100);
+
     }
     public void IncrementarMoneda()
     {
@@ -35,13 +36,17 @@ public class UIManager : MonoBehaviour
     {
         Contador_Gemas.text = contadorGemas.ToString();
     }
-    public void ActualizarBarraDeVida(int vidaPlayer)
+    public void CambiarVidaMaxima(int vidaMaxima)
     {
-        barraDeVida.value = vidaPlayer;
+        barraDeVida.maxValue = vidaMaxima;
     }
-    public void SetMaxValue(int maxVida)
+    public void CambiarVidaActual(int cantidadVida)
     {
-        barraDeVida.maxValue = maxVida;
-        barraDeVida.value = maxVida;
+        barraDeVida.value = cantidadVida;
+    }
+    public void IniciarBarradeVida(int cantidadVida)
+    {
+        CambiarVidaMaxima(cantidadVida);
+        CambiarVidaActual(cantidadVida);
     }
 }
