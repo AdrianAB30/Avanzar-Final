@@ -115,10 +115,10 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 50
+        width: 49
         height: 44
       alignment: 9
-      pivot: {x: 0.52, y: 0.55}
+      pivot: {x: 0.5568707, y: 0.6554498}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -134,19 +134,19 @@ TextureImporter:
       name: "Da\xF1o_1"
       rect:
         serializedVersion: 2
-        x: 50
+        x: 49
         y: 0
-        width: 49
+        width: 50
         height: 44
       alignment: 9
-      pivot: {x: 0.52, y: 0.55}
+      pivot: {x: 0.5312012, y: 0.6228848}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 685311941c73dcc48a69fa4e4d4724ee
-      internalID: -1664441157
+      spriteID: 2caf1c2c817b2ef4bbcc728dab47d7b5
+      internalID: -1000928297
       vertices: []
       indices: 
       edges: []
@@ -163,7 +163,7 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       "Da\xF1o_0": -524198547
-      "Da\xF1o_1": -1664441157
+      "Da\xF1o_1": -1000928297
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -11,7 +11,7 @@ public class AttackAreaSkeleton : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             Debug.Log("Player entro a ataque.");
-            skeletonController.Attack();
+            skeletonController.AttackSkeleton();
         }
     }
 }

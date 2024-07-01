@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Generador_Goblin : MonoBehaviour
 {
+    public UIManager uiManager;
     public GameObject goblinPrefab;
     public Transform spawnpoint;
     public float spawnInterval = 10f;
     public GameObject player;
+    public SFXManager SFXManager;
     //public UIManager uIManager;
 
     void Start()
@@ -21,8 +23,9 @@ public class Generador_Goblin : MonoBehaviour
         if (goblin_Controller != null)
         {
             goblin_Controller.Target = player;
+            goblin_Controller.SFXManager = SFXManager;
             //skeleton_Controller.uiManager = uiManager;
-            goblin_Controller.Walking();
+            goblin_Controller.WalkingGoblin();
         }
     }
 }

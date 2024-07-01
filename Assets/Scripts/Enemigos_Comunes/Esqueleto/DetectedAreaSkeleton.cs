@@ -14,14 +14,14 @@ public class DetectedAreaSkeleton : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            skeleton_Controller.PlayerDetected();
+            skeleton_Controller.PlayerDetectedSkeleton();
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            skeleton_Controller.PlayerLost();
+            skeleton_Controller.PlayerLostSkeleton();
         }
     }
 }

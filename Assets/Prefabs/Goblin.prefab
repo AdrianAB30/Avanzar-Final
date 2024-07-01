@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 788674421997842384}
   - component: {fileID: 9214170517491641667}
   - component: {fileID: 1678180506004154147}
-  m_Layer: 10
+  m_Layer: 15
   m_Name: DetectedArea
   m_TagString: DetectedAreaGoblin
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 7255031591081469155}
   - component: {fileID: 5720710334611039017}
   - component: {fileID: 5361660854923150860}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: AttackArea
   m_TagString: AttackAreaGoblin
   m_Icon: {fileID: 0}
@@ -156,7 +156,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.028796047, y: -0.06769988}
+  m_Offset: {x: 0.009700686, y: -0.06769988}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -167,7 +167,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5694302, y: 0.18101579}
+  m_Size: {x: 0.6916407, y: 0.18101579}
   m_EdgeRadius: 0
 --- !u!114 &5361660854923150860
 MonoBehaviour:
@@ -194,9 +194,9 @@ GameObject:
   - component: {fileID: 7804632331015143024}
   - component: {fileID: 2531571587500903054}
   - component: {fileID: 4348130155796552850}
-  - component: {fileID: 8210083764803130853}
   - component: {fileID: 6570696427198524212}
-  m_Layer: 11
+  - component: {fileID: 4829041879545899249}
+  m_Layer: 9
   m_Name: Goblin
   m_TagString: Goblin
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 4944230376442633554, guid: 048dae4a3e3ffa741b83654644b60a16, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -339,33 +339,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!50 &8210083764803130853
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6151645006763428884}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7
 --- !u!114 &6570696427198524212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -382,14 +355,44 @@ MonoBehaviour:
   vidaActualEnemigo: 0
   speed: 3
   directionX: -1
-  isDetectedPlayer: 0
+  isDetectedPlayerGoblin: 0
+  goblinSpeed: 5
   Target: {fileID: 0}
+  SFXManager: {fileID: 0}
   uiManager: {fileID: 0}
   detectionArea: {fileID: 3477961362806175165}
   attackArea: {fileID: 5952184025510548404}
   swordGoblin: {fileID: 9005205022137959040}
   detectionScript: {fileID: 1678180506004154147}
   attackScript: {fileID: 5361660854923150860}
+  swordGoblinDamage: {fileID: 7083920164796434878}
+--- !u!50 &4829041879545899249
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6151645006763428884}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &9005205022137959040
 GameObject:
   m_ObjectHideFlags: 0
@@ -400,6 +403,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000161046412416451}
   - component: {fileID: 7356082432573228641}
+  - component: {fileID: 7083920164796434878}
   m_Layer: 0
   m_Name: EspadaGoblin
   m_TagString: Untagged
@@ -429,7 +433,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9005205022137959040}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -467,3 +471,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5.0781813, y: 3.3331902}
   m_EdgeRadius: 0
+--- !u!114 &7083920164796434878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9005205022137959040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef7249e15d48a1d4bbe19a08c17918f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 15

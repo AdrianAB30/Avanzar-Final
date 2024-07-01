@@ -16,11 +16,11 @@ public class Gem_Controller : Herencia_Consumibles
     {
         base.FixedUpdate();
     }
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject.tag == "Ground")
-        {
-            Destroy(gameObject);
-        }
-    }
+    //private void OnCollisionEnter2D(Collision2D other)
+    //{
+    //    if (other.gameObject.tag == "Ground")
+    //    {
+    //        Destroy(gameObject);
+    //    }
+    //}
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Herencia_Consumibles : MonoBehaviour
 {
     protected Rigidbody2D rbd;
-    protected float speed = 2f;
+    protected float speed;
 
     protected virtual void Awake()
     {
@@ -13,6 +13,11 @@ public class Herencia_Consumibles : MonoBehaviour
     }
     protected virtual void FixedUpdate()
     {
-        rbd.velocity = new Vector2(0, speed);
+        rbd.velocity = new Vector2(0, -speed);
+
+        if (transform.position.y <= -12)
+        {
+            Destroy(gameObject);
+        }
     }
 }

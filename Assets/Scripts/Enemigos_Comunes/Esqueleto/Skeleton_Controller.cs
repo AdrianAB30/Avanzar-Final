@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class Skeleton_Controller : Herencia_Enemigos
 {
     public bool isDetectedPlayer;
@@ -10,18 +9,21 @@ public class Skeleton_Controller : Herencia_Enemigos
     private bool isAttacking;
     private float hitAnimationDuration = 0.5f;
     private float attackAnimationDuration = 0.5f;
+    public float skeletonSpeed = 2.5f;
     private float attackTimer;
     public GameObject Target;
     private SpriteRenderer spriteRenderer;
+    public SFXManager sfxmanager;
     public UIManager uiManager;
     public GameObject detectionArea;
     public GameObject attackArea;
-    public GameObject swordSkeleton;    
+    public GameObject swordSkeleton;
     private bool isPlayerInRange;
 
     public DetectedAreaSkeleton detectionScript;
     public AttackAreaSkeleton attackScript;
 
+    public SwordSkeleton swordDamage;
     protected override void Awake()
     {
         base.Awake();
@@ -33,12 +35,18 @@ public class Skeleton_Controller : Herencia_Enemigos
 
         detectionScript.skeleton_Controller = this;
         attackScript.skeletonController = this;
+
+        swordDamage = swordSkeleton.GetComponent<SwordSkeleton>();
+        swordDamage.damage = 10;
+        swordDamage.enabled = false;    
     }
+
     protected override void Start()
     {
         base.Start();
         isDetectedPlayer = true;
     }
+
     protected override void Update()
     {
         base.Update();
@@ -52,14 +60,15 @@ public class Skeleton_Controller : Herencia_Enemigos
                 animator.SetBool("hitSkeleton", false);
                 if (isDetectedPlayer)
                 {
-                    Walking();
+                    FollowPlayerSkeleton();
                 }
                 else
                 {
-                    Idle();
+                    IdleSkeleton();
                 }
             }
         }
+
         if (isAttacking)
         {
             attackTimer -= Time.deltaTime;
@@ -67,9 +76,11 @@ public class Skeleton_Controller : Herencia_Enemigos
             {
                 isAttacking = false;
                 animator.SetBool("isAttackingSkeleton", false);
+                swordDamage.enabled = false;
             }
         }
     }
+
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
@@ -78,34 +89,42 @@ public class Skeleton_Controller : Herencia_Enemigos
         {
             if (isDetectedPlayer && Target != null)
             {
-                Vector2 targetPosition = new Vector2(Target.transform.position.x, _compRigidbody.position.y);
-
-                _compRigidbody.MovePosition(Vector2.MoveTowards(_compRigidbody.position, targetPosition, speed * Time.deltaTime));
-
-                Vector2 direction = (targetPosition - (Vector2)_compRigidbody.position).normalized;
-                spriteRenderer.flipX = (Target.transform.position.x < transform.position.x);
-
-                Walking();
+                FollowPlayerSkeleton();
             }
             else
             {
-                Idle();
+                IdleSkeleton();
             }
         }
+
         if (isDetectedPlayer && isPlayerInRange)
         {
-            Attack();
+            AttackSkeleton();
         }
     }
-    public void Idle()
+    public void FollowPlayerSkeleton()
+    {
+        Debug.Log("Siguiendo al jugador con el skeleton");
+
+        Vector2 targetPosition = new Vector2(Target.transform.position.x, _compRigidbody.position.y);
+        Vector2 newPosition = Vector2.MoveTowards(_compRigidbody.position, targetPosition, skeletonSpeed * Time.fixedDeltaTime);
+
+        _compRigidbody.MovePosition(newPosition);
+        spriteRenderer.flipX = (Target.transform.position.x < transform.position.x);
+        WalkingSkeleton();
+    }
+    public void IdleSkeleton()
     {
         if (animator != null)
         {
             animator.SetBool("isIdleSkeleton", true);
             animator.SetBool("isWalkingSkeleton", false);
+
+            _compRigidbody.velocity = Vector2.zero;
         }
     }
-    public void Walking()
+
+    public void WalkingSkeleton()
     {
         if (animator != null)
         {
@@ -113,38 +132,47 @@ public class Skeleton_Controller : Herencia_Enemigos
             animator.SetBool("isIdleSkeleton", false);
         }
     }
-    public void Attack()
+
+    public void AttackSkeleton()
     {
         if (animator != null)
         {
             animator.SetBool("isAttackingSkeleton", true);
+            sfxmanager.PlaySFX(3);
             isDetectedPlayer = false;
             isAttacking = true;
             attackTimer = attackAnimationDuration;
+            swordDamage.enabled = true;
         }
     }
-    public void Death()
+
+    public void DeathSkeleton()
     {
         animator.SetTrigger("deathSkeleton");
+        sfxmanager.PlaySFX(4);
         isDetectedPlayer = false;
-        speed = 0;
+        skeletonSpeed = 0;
     }
-    public void Hit()
+
+    public void HitSkeleton()
     {
         animator.SetBool("hitSkeleton", true);
         isHit = true;
         hitTimer = hitAnimationDuration;
-    }
-    public void PlayerLost()
-    {
-        isDetectedPlayer = false;
-        Idle();
         speed = 0;
     }
-    public void PlayerDetected()
+
+    public void PlayerLostSkeleton()
+    {
+        isDetectedPlayer = false;
+        IdleSkeleton();
+        skeletonSpeed = 0;
+    }
+
+    public void PlayerDetectedSkeleton()
     {
         isDetectedPlayer = true;
-        speed = 2.5f;
+        skeletonSpeed = 2.5f;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -152,31 +180,20 @@ public class Skeleton_Controller : Herencia_Enemigos
         if (collision.gameObject.tag == "Area_Ataque_Flyn")
         {
             TakeDamage(damage);
-        }    
+        }
     }
-    //private void OnTriggerStay2D(Collider2D collision)
-    //{
-    //    if (collision.gameObject.tag == "EspadaSkeleton" && isAttacking)
-    //    {
-    //        Player player = collision.gameObject.GetComponent<Player>();
-    //        if (player != null)
-    //        {
-    //            player.TakeDamagePlayer(10);
-    //            uiManager.CambiarVidaActual(player.vidaActualPlayer);
-    //        }
-    //    }
-    //}
+
     public override void TakeDamage(int damage)
     {
         vidaActualEnemigo -= damage;
 
         if (vidaActualEnemigo <= 0)
         {
-            Death();
+            DeathSkeleton();
         }
         else
         {
-            Hit();
+            HitSkeleton();
         }
     }
 }

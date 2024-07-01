@@ -4,23 +4,27 @@ using UnityEngine;
 
 public class Goblin_Controller : Herencia_Enemigos
 {
-    public bool isDetectedPlayer;
+    public bool isDetectedPlayerGoblin;
     private bool isHit;
     private float hitTimer;
-    private bool isAttacking;
-    private float hitAnimationDuration = 0.6f;
+    private bool isAttackingGoblin;
+    private float hitAnimationDuration = 0.5f;
     private float attackAnimationDuration = 0.5f;
+    public float goblinSpeed = 3f;
     private float attackTimer;
     public GameObject Target;
     private SpriteRenderer spriteRenderer;
+    public SFXManager SFXManager;
     public UIManager uiManager;
     public GameObject detectionArea;
     public GameObject attackArea;
     public GameObject swordGoblin;
-    private bool isPlayerInRange;
+    private bool isPlayerInRangeGoblin;
 
     public Detected_Area detectionScript;
     public Attack_Area_Goblin attackScript;
+
+    public SwordGoblin swordGoblinDamage;
 
     protected override void Awake()
     {
@@ -33,14 +37,18 @@ public class Goblin_Controller : Herencia_Enemigos
 
         detectionScript.goblin_Controller = this;
         attackScript.goblin_Controller = this;
+
+        swordGoblinDamage = swordGoblin.GetComponent<SwordGoblin>();
+        swordGoblinDamage.damage = 15;
+        swordGoblin.SetActive(false); 
     }
+
     protected override void Start()
     {
         base.Start();
-        speed = 3;
-        isDetectedPlayer = true;
-        directionX = -1;
+        isDetectedPlayerGoblin = true;
     }
+
     protected override void Update()
     {
         base.Update();
@@ -52,61 +60,74 @@ public class Goblin_Controller : Herencia_Enemigos
             {
                 isHit = false;
                 animator.SetBool("isHitGoblin", false);
-                if (isDetectedPlayer)
+                if (isDetectedPlayerGoblin)
                 {
-                    Walking();
+                    WalkingGoblin();
                 }
                 else
                 {
-                    Idle();
+                    IdleGoblin();
                 }
             }
         }
-        if (isAttacking)
+
+        if (isAttackingGoblin)
         {
             attackTimer -= Time.deltaTime;
             if (attackTimer <= 0)
             {
-                isAttacking = false;
+                isAttackingGoblin = false;
                 animator.SetBool("isAttackGoblin", false);
+                swordGoblin.SetActive(false);
             }
         }
     }
+
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
 
         if (!isHit)
         {
-            if (isDetectedPlayer && Target != null)
+            if (isDetectedPlayerGoblin && Target != null)
             {
-                Vector2 targetPosition = new Vector2(Target.transform.position.x, _compRigidbody.position.y);
-
-                spriteRenderer.flipX = (Target.transform.position.x < transform.position.x);
-
-                _compRigidbody.MovePosition(Vector2.MoveTowards(_compRigidbody.position, targetPosition, speed * Time.deltaTime));
-
-                Walking();
+                FollowPlayerGoblin();
             }
             else
             {
-                Idle();
+                IdleGoblin();
             }
         }
-        if (isDetectedPlayer && isPlayerInRange)
+
+        if (isDetectedPlayerGoblin && isPlayerInRangeGoblin)
         {
-            Attack();
+            AttackGoblin();
         }
     }
-    public void Idle()
+
+    private void FollowPlayerGoblin()
+    {
+        Debug.Log("Siguiendo a Flyn");
+        Vector2 targetPosition = new Vector2(Target.transform.position.x, _compRigidbody.position.y);
+        Vector2 newPosition = Vector2.MoveTowards(_compRigidbody.position, targetPosition, goblinSpeed * Time.fixedDeltaTime);
+
+        _compRigidbody.MovePosition(newPosition);
+        spriteRenderer.flipX = (Target.transform.position.x < transform.position.x);
+        WalkingGoblin();
+    }
+
+    public void IdleGoblin()
     {
         if (animator != null)
         {
             animator.SetBool("isIdleGoblin", true);
             animator.SetBool("isWalkingGoblin", false);
+
+            _compRigidbody.velocity = Vector2.zero;
         }
     }
-    public void Walking()
+
+    public void WalkingGoblin()
     {
         if (animator != null)
         {
@@ -114,58 +135,68 @@ public class Goblin_Controller : Herencia_Enemigos
             animator.SetBool("isIdleGoblin", false);
         }
     }
-    public void Attack()
+
+    public void AttackGoblin()
     {
         if (animator != null)
         {
             animator.SetBool("isAttackGoblin", true);
-            isDetectedPlayer = false;
-            isAttacking = true;
+            SFXManager.PlaySFX(5);
+            isDetectedPlayerGoblin = false;
+            isAttackingGoblin = true;
             attackTimer = attackAnimationDuration;
+            swordGoblin.SetActive(true); 
         }
     }
-    public void Death()
+
+    public void DeathGoblin()
     {
         animator.SetTrigger("isDeathGoblin");
-        isDetectedPlayer = false;
-        speed = 0;
+        isDetectedPlayerGoblin = false;
+        goblinSpeed = 0;
     }
-    public void Hit()
+
+    public void HitGoblin()
     {
         animator.SetBool("isHitGoblin", true);
         isHit = true;
         hitTimer = hitAnimationDuration;
-    }
-    public void PlayerLost()
-    {
-        isDetectedPlayer = false;
-        Idle();
         speed = 0;
     }
-    public void PlayerDetected()
+
+    public void PlayerLostGoblin()
     {
-        isDetectedPlayer = true;
-        speed = 2.5f;
+        isDetectedPlayerGoblin = false;
+        IdleGoblin();
+        goblinSpeed = 0;
     }
+
+    public void PlayerDetectedGoblin()
+    {
+        Debug.Log("Entraste al area de deteccion del goblin");
+        isDetectedPlayerGoblin = true;
+        goblinSpeed = 3.5f;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Area_Ataque_Flyn")
         {
-            TakeDamage(5);
+            TakeDamage(10);
         }
     }
+
     public override void TakeDamage(int damage)
     {
         vidaActualEnemigo -= damage;
 
         if (vidaActualEnemigo <= 0)
         {
-            Death();
+            DeathGoblin();
         }
         else
         {
-            Hit();
+            HitGoblin();
         }
     }
 }
-

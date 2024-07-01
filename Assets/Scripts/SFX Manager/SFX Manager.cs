@@ -4,15 +4,40 @@ using UnityEngine;
 
 public class SFXManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public AudioSource sfxSource;
+    public AudioClip[] sfxClips;
+    private const string MutePrefKey = "SFXMuteState";
+
+    private void Awake()
     {
-        
+        LoadMuteState();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PlaySFX(int index)
     {
-        
+        if (index >= 0 && index < sfxClips.Length)
+        {
+            sfxSource.PlayOneShot(sfxClips[index]);
+        }
+    }
+
+    public void MuteAll()
+    {
+        sfxSource.mute = true;
+        PlayerPrefs.SetInt(MutePrefKey, 1);
+        PlayerPrefs.Save();
+    }
+
+    public void UnmuteAll()
+    {
+        sfxSource.mute = false;
+        PlayerPrefs.SetInt(MutePrefKey, 0);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadMuteState()
+    {
+        int muteState = PlayerPrefs.GetInt(MutePrefKey, 0);
+        sfxSource.mute = (muteState == 1);
     }
 }

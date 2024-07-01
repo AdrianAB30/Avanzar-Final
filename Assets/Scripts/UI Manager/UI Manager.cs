@@ -4,11 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
+    public Generador_Skeleton generadorSkeleton;
+    public Generador_Goblin generadorGoblin;
+
     public Text Contador_Monedas;
     public Text Contador_Gemas;
     private int contadorMonedas = 0;
     private int contadorGemas = 0;
     public Slider barraDeVida;
+    public GameObject flechaContinuar;
 
     private void Awake()
     {
@@ -31,6 +35,12 @@ public class UIManager : MonoBehaviour
     {
         contadorGemas++;
         ActualizarContadorGemas();
+        if (contadorGemas >= 3)
+        {
+            //ActivarBoss();
+            DesactivarSpawners();
+            ActivarFlecha();
+        }
     }
     private void ActualizarContadorGemas()
     {
@@ -48,5 +58,21 @@ public class UIManager : MonoBehaviour
     {
         CambiarVidaMaxima(cantidadVida);
         CambiarVidaActual(cantidadVida);
+    }
+    private void DesactivarSpawners()
+    {
+        if (generadorSkeleton != null)
+        {
+            generadorSkeleton.gameObject.SetActive(false);
+        }
+
+        if (generadorGoblin != null)
+        {
+            generadorGoblin.gameObject.SetActive(false);
+        }
+    }
+    private void ActivarFlecha()
+    {
+        flechaContinuar.gameObject.SetActive(true);
     }
 }

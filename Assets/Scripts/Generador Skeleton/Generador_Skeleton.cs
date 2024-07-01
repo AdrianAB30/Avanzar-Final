@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Generador_Skeleton : MonoBehaviour
 {
+    public UIManager uiManager;
     public GameObject skeletonPrefab;
     public Transform spawnPoint;
     public float spawnInterval = 15f;
     public GameObject player;
+    public SFXManager sfxManager;
     //public UIManager uiManager;
 
     void Start()
@@ -22,7 +24,8 @@ public class Generador_Skeleton : MonoBehaviour
         {
             skeleton_Controller.Target = player;
             //skeleton_Controller.uiManager = uiManager;
-            skeleton_Controller.Walking();
+            skeleton_Controller.sfxmanager = sfxManager;
+            skeleton_Controller.WalkingSkeleton();
         }
     }
 }

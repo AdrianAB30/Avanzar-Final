@@ -154,17 +154,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vidaMaxEnemigo: 100
   vidaActualEnemigo: 0
-  speed: 3
+  speed: 5
   directionX: 1
-  damage: 20
   isDetectedPlayer: 0
+  skeletonSpeed: 3
   Target: {fileID: 0}
+  sfxmanager: {fileID: 0}
   uiManager: {fileID: 0}
   detectionArea: {fileID: 1757955025767309989}
   attackArea: {fileID: 5781100502651725116}
   swordSkeleton: {fileID: 4771410085265298901}
   detectionScript: {fileID: 1506508916753525766}
   attackScript: {fileID: 612801056014882908}
+  swordDamage: {fileID: 64521965874050212}
 --- !u!61 &5337171084241578857
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -275,7 +277,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.023815036, y: -0.14449228}
+  m_Offset: {x: -0.017842025, y: -0.2045907}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -286,7 +288,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1404665, y: 0.36554775}
+  m_Size: {x: 1.1524124, y: 0.24535093}
   m_EdgeRadius: 0
 --- !u!114 &1506508916753525766
 MonoBehaviour:
@@ -311,6 +313,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4722335548405887863}
   - component: {fileID: 5970229594574059037}
+  - component: {fileID: 64521965874050212}
   m_Layer: 0
   m_Name: EspadaSkeleton
   m_TagString: EspadaSkeleton
@@ -378,6 +381,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.4554487, y: 0.4056784}
   m_EdgeRadius: 0
+--- !u!114 &64521965874050212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4771410085265298901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb4571906fbaf0c47a08487d5630bed3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
 --- !u!1 &5073953598074772117
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,6 +404,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7178163098047784719}
   - component: {fileID: 5396917804452287645}
+  - component: {fileID: 6232238763248212242}
   m_Layer: 0
   m_Name: EspadaSkeleton2
   m_TagString: EspadaSkeleton2
@@ -455,6 +472,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.4554487, y: 0.4056784}
   m_EdgeRadius: 0
+--- !u!114 &6232238763248212242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5073953598074772117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb4571906fbaf0c47a08487d5630bed3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
 --- !u!1 &5781100502651725116
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,7 +550,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.02887687, y: -0.12316871}
+  m_Offset: {x: -0.014246389, y: -0.17365135}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -531,7 +561,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.86176306, y: 0.34968466}
+  m_Size: {x: 0.69205046, y: 0.24871936}
   m_EdgeRadius: 0
 --- !u!114 &612801056014882908
 MonoBehaviour:

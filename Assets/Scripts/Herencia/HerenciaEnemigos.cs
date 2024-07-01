@@ -45,6 +45,6 @@ public class Herencia_Enemigos : MonoBehaviour
     }
     public virtual void CauseDamage(int damageCaused)
     {
-        
+        //Aqui va la logica propia de mi goblin y esqueleton
     }
 }

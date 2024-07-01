@@ -11,7 +11,7 @@ public class Attack_Area_Goblin : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             Debug.Log("Player entro a ataque de Goblin.");
-            goblin_Controller.Attack();
+            goblin_Controller.AttackGoblin();
         }
     }
 }

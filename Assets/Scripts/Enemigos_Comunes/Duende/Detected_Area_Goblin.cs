@@ -14,14 +14,14 @@ public class Detected_Area : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            goblin_Controller.PlayerDetected();
+            goblin_Controller.PlayerDetectedGoblin();
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            goblin_Controller.PlayerLost();
+            goblin_Controller.PlayerLostGoblin();
         }
     }
 }

@@ -16,6 +16,12 @@ TagManager:
   - EspadaSkeleton
   - DetectedAreaSkeleton
   - EspadaSkeleton2
+  - DetectedAreaGoblin
+  - AttackAreaGoblin
+  - FlechaContinuar
+  - Attack Area Boss
+  - Detected Area Boss
+  - FireBall
   layers:
   - Default
   - TransparentFX
@@ -26,14 +32,14 @@ TagManager:
   - Attack Skeleton
   - Attack Player
   - Skeleton
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Goblin
+  - "Da\xF1o Critico"
+  - Deteccion Boss
+  - Attack Boss
+  - Player
+  - Boss
+  - Deteccion Goblin
+  - Attack Goblin
   - 
   - 
   - 

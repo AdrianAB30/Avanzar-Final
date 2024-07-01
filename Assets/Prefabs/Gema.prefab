@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 7815771181748775669}
   - component: {fileID: -7819207493859538985}
   - component: {fileID: 3956559860601405670}
+  - component: {fileID: 8753107360187763251}
   m_Layer: 0
   m_Name: Gema
-  m_TagString: Untagged
+  m_TagString: Gem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147,3 +148,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f9fad883a8382a4dbb3b8a85bd821b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!70 &8753107360187763251
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5758406233944874474}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.06944309, y: -0.027566822}
+  m_Size: {x: 1.554215, y: 1.9470552}
+  m_Direction: 0
