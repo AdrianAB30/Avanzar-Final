@@ -45,7 +45,15 @@ public class Player : MonoBehaviour
         else
         {
             vidaActualPlayer = vidaMaxPlayer;
+            PlayerPrefs.SetInt("PlayerLife", vidaMaxPlayer); 
         }
+        uimanager.CambiarVidaActual(vidaActualPlayer);
+    }
+    public void ReiniciarVidaJuego()
+    {
+        PlayerPrefs.DeleteKey("PlayerLife");
+        vidaActualPlayer = vidaMaxPlayer;
+        PlayerPrefs.SetInt("PlayerLife", vidaMaxPlayer); 
         uimanager.CambiarVidaActual(vidaActualPlayer);
     }
 
@@ -212,17 +220,19 @@ public class Player : MonoBehaviour
         if (!isAlive) return;
         if (collision.gameObject.tag == "Coin")
         {
+            sfxmanager.PlaySFX(7);
             uimanager.IncrementarMoneda();
             Destroy(collision.gameObject);
         }
         if (collision.gameObject.tag == "Gem")
         {
+            sfxmanager.PlaySFX(7);
             uimanager.IncrementarGemas();
             Destroy(collision.gameObject);
         }
     }
     private void OnDisable()
     {
-        PlayerPrefs.DeleteKey("PlayerLife");
+        //PlayerPrefs.DeleteKey("PlayerLife");
     }
 }

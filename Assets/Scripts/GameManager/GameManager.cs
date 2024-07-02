@@ -191,11 +191,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ClearPlayerPrefs()
-    {
-        PlayerPrefs.DeleteAll();
-        Debug.Log("PlayerPrefs limpiados");
-    }
+    //public void ClearPlayerPrefs()
+    //{
+    //    PlayerPrefs.DeleteAll();
+    //    Debug.Log("PlayerPrefs limpiados");
+    //}
 
     public void MenuLevel2()
     {

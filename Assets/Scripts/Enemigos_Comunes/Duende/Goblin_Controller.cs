@@ -151,6 +151,7 @@ public class Goblin_Controller : Herencia_Enemigos
 
     public void DeathGoblin()
     {
+        SFXManager.PlaySFX(6);
         animator.SetTrigger("isDeathGoblin");
         isDetectedPlayerGoblin = false;
         goblinSpeed = 0;
@@ -182,7 +183,7 @@ public class Goblin_Controller : Herencia_Enemigos
     {
         if (collision.gameObject.tag == "Area_Ataque_Flyn")
         {
-            TakeDamage(10);
+            TakeDamage(8);
         }
     }
 
